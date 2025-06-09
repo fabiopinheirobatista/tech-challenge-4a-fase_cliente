@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  cliente-db:
+    image: mysql:8.0
+    container_name: cliente-db-dev 
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cliente_db
+    ports:
+      - "33061:3306"
+    volumes:
+      - cliente_dev_data:/var/lib/mysql
+    networks:
+      - cliente-net
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  cliente-api:
+    build: .
+    container_name: cliente-api-dev
+    depends_on:
+      cliente-db:
+        condition: service_healthy
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://cliente-db:3306/cliente_db?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - cliente-net
+
+volumes:
+  cliente_dev_data:
+
+networks:
+  cliente-net:

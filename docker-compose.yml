@@ -1,43 +1,43 @@
-version: '3.8'
-
 services:
-  cliente-db:
+  db-cliente:
     image: mysql:8.0
-    container_name: cliente-db-dev 
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: cliente_db
-    ports:
-      - "33061:3306"
-    volumes:
-      - cliente_dev_data:/var/lib/mysql
-    networks:
-      - cliente-net
+    container_name: db-cliente
+    restart: unless-stopped
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER} -p${MYSQL_PASSWORD} --silent" ]
       interval: 10s
-      timeout: 5s
+      timeout: 10s
       retries: 5
       start_period: 30s
+    environment:
+      MYSQL_DATABASE: cliente_db
+      MYSQL_USER: cliente_user
+      MYSQL_PASSWORD: secure_password_cliente
+      MYSQL_ROOT_PASSWORD: secure_root_password_cliente
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data_cliente:/var/lib/mysql
+    networks:
+      - pedido-net
 
   cliente-api:
     build: .
     container_name: cliente-api-dev
     depends_on:
-      cliente-db:
+      db-cliente:
         condition: service_healthy
     ports:
-      - "8081:8080"
+      - "8081:8081"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://cliente-db:3306/cliente_db?useSSL=false&allowPublicKeyRetrieval=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_DATASOURCE_URL: jdbc:mysql://db-cliente:3306/cliente_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: cliente_user
+      SPRING_DATASOURCE_PASSWORD: secure_password_cliente
     networks:
-      - cliente-net
+      - pedido-net
 
 volumes:
-  cliente_dev_data:
+  db_data_cliente:
 
 networks:
-  cliente-net:
+  pedido-net:

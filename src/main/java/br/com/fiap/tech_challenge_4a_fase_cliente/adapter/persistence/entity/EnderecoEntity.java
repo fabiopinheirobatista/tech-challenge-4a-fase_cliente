@@ -1,5 +1,6 @@
-package br.com.fiap.tech_challenge_4a_fase_cliente.adapter.persistence;
+package br.com.fiap.tech_challenge_4a_fase_cliente.adapter.persistence.entity;
 
+import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.endereco.Endereco;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EnderecoEntity {
+
+    public EnderecoEntity(Endereco endereco) {
+        this.logradouro = endereco.getLogradouro();
+        this.numero = endereco.getNumero();
+        this.complemento = endereco.getComplemento();
+        this.bairro = endereco.getBairro();
+        this.cidade = endereco.getCidade();
+        this.estado = endereco.getEstado();
+        this.cep = endereco.getCep();
+    }
 
     @Column(name = "endereco_logradouro")
     private String logradouro;
@@ -32,4 +43,5 @@ public class EnderecoEntity {
 
     @Column(name = "endereco_cep")
     private String cep;
+
 }

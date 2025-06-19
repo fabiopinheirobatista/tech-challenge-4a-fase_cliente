@@ -1,7 +1,5 @@
 package br.com.fiap.tech_challenge_4a_fase_cliente.adapter.mapper;
 
-import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.controller.ClienteDto;
-import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.controller.EnderecoDto;
 import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.controller.request.ClienteRequestDto;
 import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.controller.request.ClienteRequestDto.EnderecoRequestDto;
 import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.controller.response.ClienteResponseDto;
@@ -10,13 +8,10 @@ import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.persistence.entity.Cli
 import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.persistence.entity.EnderecoEntity;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.cliente.Cliente;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.endereco.Endereco;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ClienteMapper {
 
-    public static ClienteEntity toClienteEntity(Cliente cliente) {
+    public ClienteEntity toClienteEntity(Cliente cliente) {
         if (cliente == null) return null;
         return new ClienteEntity(
                 cliente.getId(),
@@ -27,9 +22,9 @@ public class ClienteMapper {
         );
     }
 
-    public static Cliente toClientDomain(ClienteEntity entity) {
-        Endereco endereco = toEnderecoDomain(entity.getEndereco());
+    public Cliente toClientDomain(ClienteEntity entity) {
         if (entity == null) return null;
+        Endereco endereco = toEnderecoDomain(entity.getEndereco());
         return new Cliente(
                 entity.getId(),
                 entity.getNome(),
@@ -39,7 +34,7 @@ public class ClienteMapper {
         );
     }
 
-    public static EnderecoEntity toEnderecoEntity(Endereco endereco) {
+    public EnderecoEntity toEnderecoEntity(Endereco endereco) {
         if (endereco == null) return null;
         return new EnderecoEntity(
                 endereco.getLogradouro(),
@@ -52,7 +47,7 @@ public class ClienteMapper {
         );
     }
 
-    public static Endereco toEnderecoDomain(EnderecoEntity entity) {
+    public Endereco toEnderecoDomain(EnderecoEntity entity) {
         if (entity == null) return null;
         return new Endereco(
                 entity.getLogradouro(),
@@ -65,7 +60,7 @@ public class ClienteMapper {
         );
     }
 
-    public static Cliente toClienteDomain(ClienteRequestDto dto) {
+    public Cliente toClienteDomain(ClienteRequestDto dto) {
         if (dto == null) return null;
         Endereco endereco = toEnderecoDomain(dto.endereco());
         return new Cliente(
@@ -76,7 +71,7 @@ public class ClienteMapper {
         );
     }
 
-    public static ClienteResponseDto toClienteResponseDto(Cliente cliente) {
+    public ClienteResponseDto toClienteResponseDto(Cliente cliente) {
         if (cliente == null) return null;
         EnderecoResponseDto enderecoDto =
                 toEnderecoResponseDto(cliente.getEndereco());
@@ -89,7 +84,7 @@ public class ClienteMapper {
         );
     }
 
-    public static ClienteRequestDto toClienteRequestDto(Cliente cliente) {
+    public ClienteRequestDto toClienteRequestDto(Cliente cliente) {
         if (cliente == null) return null;
         EnderecoResponseDto enderecoDto =
                 toEnderecoResponseDto(cliente.getEndereco());
@@ -102,7 +97,7 @@ public class ClienteMapper {
 
     }
 
-    private static EnderecoRequestDto toEnderecoRequestDto(EnderecoResponseDto endereco) {
+    private EnderecoRequestDto toEnderecoRequestDto(EnderecoResponseDto endereco) {
         if (endereco == null) return null;
         return new EnderecoRequestDto(
                 endereco.logradouro(),
@@ -115,7 +110,7 @@ public class ClienteMapper {
         );
     }
 
-    private static EnderecoResponseDto toEnderecoResponseDto(Endereco endereco) {
+    private EnderecoResponseDto toEnderecoResponseDto(Endereco endereco) {
         if (endereco == null) return null;
         return new EnderecoResponseDto(
                 endereco.getLogradouro(),
@@ -128,7 +123,7 @@ public class ClienteMapper {
         );
     }
 
-    private static Endereco toEnderecoDomain(EnderecoRequestDto dto) {
+    private Endereco toEnderecoDomain(EnderecoRequestDto dto) {
         if (dto == null) return null;
         return new Endereco(
                 dto.logradouro(),
@@ -141,49 +136,5 @@ public class ClienteMapper {
         );
     }
 
-    public static EnderecoDto toEnderecoDto(Endereco endereco) {
-        if (endereco == null) return null;
-        return new EnderecoDto(
-                endereco.getLogradouro(),
-                endereco.getNumero(),
-                endereco.getComplemento(),
-                endereco.getBairro(),
-                endereco.getCidade(),
-                endereco.getEstado(),
-                endereco.getCep()
-        );
-    }
-    public static ClienteDto toClienteDto(Cliente cliente) {
-        if (cliente == null) return null;
-        return new ClienteDto(
-                cliente.getId(),
-                cliente.getNome(),
-                cliente.getCpf() != null ? cliente.getCpf().getDocument() : null,
-                cliente.getDataNascimento(),
-                cliente.getEndereco() != null ? toEnderecoDto(cliente.getEndereco()) : null
-        );
-    }
 
-    public static ClienteRequestDto toClienteRequestDto(ClienteDto clienteDto) {
-        if (clienteDto == null) return null;
-        return new ClienteRequestDto(
-                clienteDto.getNome(),
-                clienteDto.getCpf(),
-                clienteDto.getDataNascimento(),
-                toEnderecoRequestDto(clienteDto.getEndereco())
-        );
-    }
-
-    private static EnderecoRequestDto toEnderecoRequestDto(EnderecoDto enderecoDto) {
-        if (enderecoDto == null) return null;
-        return new EnderecoRequestDto(
-                enderecoDto.getLogradouro(),
-                enderecoDto.getNumero(),
-                enderecoDto.getComplemento(),
-                enderecoDto.getBairro(),
-                enderecoDto.getCidade(),
-                enderecoDto.getEstado(),
-                enderecoDto.getCep()
-        );
-    }
 }

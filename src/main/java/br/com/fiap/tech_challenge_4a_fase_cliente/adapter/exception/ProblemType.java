@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum ProblemType {
-    RECURSO_NAO_ENCOINTRADO("/recurso-nao-encontrado", "Recurso não encontrado"),
+    RECURSO_NAO_ENCONTRADO("/recurso-nao-encontrado", "Recurso não encontrado"),
     ENTIDADE_EM_USO("/entidade-em-uso", "Entidade em uso"),
     ERRO_NEGOCIO("/erro-negocio", "Violação de regra de negócio"),
     MENSAGEM_INCOMPREENSIVEL("/mensagem-incompreensivel", "Mensagem incompreensivel"),
@@ -14,8 +14,8 @@ public enum ProblemType {
     ERRO_DE_SISTEMA("/erro-de-sistema", "Erro de sistema"),
     DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos"),
     CEP_INVALIDOS("/cep-invalido", "CEP Ivalido"),
-    CPF_INVALIDOS("/cep-invalido", "CPF Ivalido"),
-    CPF_JACADASTRADO("/cep-invalido", "CPF Já Cadastrado"),
+    CPF_INVALIDOS("/cpf-invalido", "CPF Ivalido"),
+    CPF_JA_CADASTRADO("/cpf-ja-cadastrado", "CPF Já Cadastrado"),
     ;
 
     private String title;

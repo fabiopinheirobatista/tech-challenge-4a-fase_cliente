@@ -2,9 +2,13 @@ package br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.cliente;
 
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.endereco.Endereco;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.vo.CPF;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Getter
+@Setter
 public class Cliente {
 
     private Long id;
@@ -24,33 +28,5 @@ public class Cliente {
         this.cpf = new CPF(cpf);
         this.dataNascimento = dataNascimento;
         this.endereco = endereco;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public CPF getCpf() {
-        return cpf;
-    }
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
-    }
-
-    public void setCpf(CPF cpf) {
-        this.cpf = cpf;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

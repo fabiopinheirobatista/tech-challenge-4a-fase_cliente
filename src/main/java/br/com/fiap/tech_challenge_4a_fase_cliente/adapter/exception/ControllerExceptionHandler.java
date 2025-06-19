@@ -2,6 +2,8 @@ package br.com.fiap.tech_challenge_4a_fase_cliente.adapter.exception;
 
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.exception.CEPInvalidoException;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.exception.CPFInvalidoException;
+import br.com.fiap.tech_challenge_4a_fase_cliente.core.exception.ClienteNaoEncontradoException;
+import br.com.fiap.tech_challenge_4a_fase_cliente.core.exception.CpfJaCadastradoException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
@@ -34,7 +35,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                         .name(violation.getPropertyPath().toString())
                         .userMessage(violation.getMessage())
                         .build())
-                .collect(Collectors.toList());
+                .toList();
 
         Problem problem = createProblemBuilder(HttpStatus.BAD_REQUEST, problemType, detail)
                 .userMessage(detail)
@@ -44,7 +45,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
-
+    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
@@ -58,7 +59,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                 .map(problemFild -> Problem.Field.builder()
                         .name(problemFild.getField())
                         .userMessage(problemFild.getDefaultMessage())
-                        .build()).collect(Collectors.toList());
+                        .build()).toList();
 
 
         Problem problem = createProblemBuilder(status, problemType, detail)
@@ -69,32 +70,20 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
-    @ExceptionHandler(br.com.fiap.tech_challenge_4a_fase_cliente.core.exception.ClienteNaoEncontradoException.class)
-    public ResponseEntity<?> handleEstadoNaoEncontradoException(br.com.fiap.tech_challenge_4a_fase_cliente.core.exception.ClienteNaoEncontradoException e, WebRequest request){
-        HttpStatus status = HttpStatus.NOT_FOUND;
-
-        ProblemType problemaType = ProblemType.RECURSO_NAO_ENCOINTRADO;
-        String detail = e.getMessage();
-        Problem problema = createProblemBuilder(status,problemaType, detail)
-                .userMessage(detail)
-                .build();
-        return handleExceptionInternal(e,problema, new HttpHeaders(), status, request);
-    }
-
     @ExceptionHandler(ClienteNaoEncontradoException.class)
-    public ResponseEntity<?> handleEstadoNaoEncontradoException(ClienteNaoEncontradoException e, WebRequest request){
+    public ResponseEntity<Object> handleEstadoNaoEncontradoException(ClienteNaoEncontradoException e, WebRequest request){
         HttpStatus status = HttpStatus.NOT_FOUND;
 
-        ProblemType problemaType = ProblemType.RECURSO_NAO_ENCOINTRADO;
+        ProblemType problemaType = ProblemType.RECURSO_NAO_ENCONTRADO;
         String detail = e.getMessage();
         Problem problema = createProblemBuilder(status,problemaType, detail)
                 .userMessage(detail)
                 .build();
-        return handleExceptionInternal(e,problema, new HttpHeaders(), status, request);
+        return handleExceptionInternal(e, problema, new HttpHeaders(), status, request);
     }
 
     @ExceptionHandler(CEPInvalidoException.class)
-    public ResponseEntity<?> handleCEPInvalidoException(CEPInvalidoException e, WebRequest request){
+    public ResponseEntity<Object> handleCEPInvalidoException(CEPInvalidoException e, WebRequest request){
         HttpStatus status = HttpStatus.CONFLICT;
 
         ProblemType problemaType = ProblemType.CEP_INVALIDOS;
@@ -106,7 +95,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(CPFInvalidoException.class)
-    public ResponseEntity<?> handleCPFInvalidoException(CPFInvalidoException e, WebRequest request){
+    public ResponseEntity<Object> handleCPFInvalidoException(CPFInvalidoException e, WebRequest request){
         HttpStatus status = HttpStatus.CONFLICT;
 
         ProblemType problemaType = ProblemType.CPF_INVALIDOS;
@@ -118,10 +107,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(CpfJaCadastradoException.class)
-    public ResponseEntity<?> handleCPFInvalidoException(CpfJaCadastradoException e, WebRequest request){
+    public ResponseEntity<Object> handleCPFInvalidoException(CpfJaCadastradoException e, WebRequest request){
         HttpStatus status = HttpStatus.CONFLICT;
 
-        ProblemType problemaType = ProblemType.CPF_JACADASTRADO;
+        ProblemType problemaType = ProblemType.CPF_JA_CADASTRADO;
         String detail = e.getMessage();
         Problem problema = createProblemBuilder(status,problemaType, detail)
                 .userMessage(detail)
@@ -130,7 +119,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<?> handleDataIntegrityViolationException(DataIntegrityViolationException e, WebRequest request) {
+    public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException e, WebRequest request) {
         HttpStatus status = HttpStatus.CONFLICT;
         ProblemType problemType = ProblemType.DADOS_INVALIDOS;
 
@@ -164,7 +153,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        ProblemType problemaType = ProblemType.RECURSO_NAO_ENCOINTRADO;
+        ProblemType problemaType = ProblemType.RECURSO_NAO_ENCONTRADO;
         String detail = String.format("O recurso %s, que você tentou acessar, é inexistente.",ex.getRequestURL());
 
         Problem problem = createProblemBuilder(status, problemaType, detail)

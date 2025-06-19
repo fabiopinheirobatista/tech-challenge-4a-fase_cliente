@@ -9,34 +9,35 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 public class RepositorioDeClienteJPAGatewayImpl implements ClienteGateway {
 
     private final ClienteRepository clienteRepository;
+    private ClienteMapper mapper;
 
     public RepositorioDeClienteJPAGatewayImpl(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
+        mapper = new ClienteMapper();
     }
 
     @Override
     public Cliente salvar(Cliente cliente) {
-        ClienteEntity entity = ClienteMapper.toClienteEntity(cliente);
+        ClienteEntity entity = mapper.toClienteEntity(cliente);
         clienteRepository.save(entity);
-        return ClienteMapper.toClientDomain(entity);
+        return mapper.toClientDomain(entity);
     }
 
     @Override
     public Optional<Cliente> buscarPorId(Long id) {
         Optional<ClienteEntity> clienteEntityOptional = clienteRepository.findById(id);
-        return clienteEntityOptional.map(ClienteMapper::toClientDomain);
+        return clienteEntityOptional.map(mapper::toClientDomain);
     }
 
     @Override
     public Optional<Cliente> buscarPorCpf(String cpf) {
         return clienteRepository.findByCpf(cpf)
-                .map(ClienteMapper::toClientDomain);
+                .map(mapper::toClientDomain);
     }
 
     @Override
@@ -47,9 +48,9 @@ public class RepositorioDeClienteJPAGatewayImpl implements ClienteGateway {
     @Override
     public Cliente atualizar(Long id, Cliente cliente) {
         cliente.setId(id);
-        ClienteEntity entity = ClienteMapper.toClienteEntity(cliente);
+        ClienteEntity entity = mapper.toClienteEntity(cliente);
         clienteRepository.save(entity);
-        return ClienteMapper.toClientDomain(entity);
+        return mapper.toClientDomain(entity);
     }
 
     @Override
@@ -57,8 +58,8 @@ public class RepositorioDeClienteJPAGatewayImpl implements ClienteGateway {
         return clienteRepository
                 .findAll()
                 .stream()
-                .map(entity -> ClienteMapper.toClientDomain(entity))
-                .collect(Collectors.toList());
+                .map(entity -> mapper.toClientDomain(entity))
+                .toList();
     }
 }
 

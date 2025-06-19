@@ -84,35 +84,6 @@
 			"response": []
 		},
 		{
-			"name": "Atualizar Cliente Parcial",
-			"request": {
-				"method": "PATCH",
-				"header": [
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{    \n    \"endereco\": {\n        \"numero\": \"00\"\n\n    }\n}"
-				},
-				"url": {
-					"raw": "http://localhost:8081/clientes/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8081",
-					"path": [
-						"clientes",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Deletar Cliente",
 			"request": {
 				"method": "DELETE",

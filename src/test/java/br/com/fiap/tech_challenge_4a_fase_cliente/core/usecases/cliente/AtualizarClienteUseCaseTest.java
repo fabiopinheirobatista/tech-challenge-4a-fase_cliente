@@ -6,7 +6,6 @@ import br.com.fiap.tech_challenge_4a_fase_cliente.core.exception.ClienteNaoEncon
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.gateways.ClienteGateway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;

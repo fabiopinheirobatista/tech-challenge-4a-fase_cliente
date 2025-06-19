@@ -7,7 +7,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -61,19 +60,15 @@ class ControllerExceptionHandlerTest {
 
         // Act
         ResponseEntity<Object> response = exceptionHandler.handleConstraintViolationException(ex, webRequest);
-
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         Problem problem = (Problem) response.getBody();
         assertNotNull(problem);
         assertEquals(400, problem.getStatus());
-        //assertFalse(problem.getErrors().isEmpty());
     }
 
     @Test
     void handleMethodArgumentNotValid() {
-        // Arrange
         MethodArgumentNotValidException ex = mock(MethodArgumentNotValidException.class);
         BindingResult bindingResult = mock(BindingResult.class);
         when(ex.getBindingResult()).thenReturn(bindingResult);
@@ -81,11 +76,9 @@ class ControllerExceptionHandlerTest {
                 new FieldError("object", "field", "mensagem de erro")
         ));
 
-        // Act
         ResponseEntity<Object> response = exceptionHandler.handleMethodArgumentNotValid(
                 ex, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
 
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         Problem problem = (Problem) response.getBody();
@@ -95,13 +88,10 @@ class ControllerExceptionHandlerTest {
 
     @Test
     void handleClienteNaoEncontradoException() {
-        // Arrange
         ClienteNaoEncontradoException ex = new ClienteNaoEncontradoException("Cliente não encontrado");
 
-        // Act
         ResponseEntity<Object> response = exceptionHandler.handleEstadoNaoEncontradoException(ex, webRequest);
 
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         Problem problem = (Problem) response.getBody();
@@ -176,15 +166,12 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
-    void handleNoHandlerFoundException() throws Exception {
-        // Arrange
+    void handleNoHandlerFoundException() {
         NoHandlerFoundException ex = new NoHandlerFoundException("GET", "/invalid-path", new HttpHeaders());
 
-        // Act
         ResponseEntity<Object> response = exceptionHandler.handleNoHandlerFoundException(
                 ex, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
 
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         Problem problem = (Problem) response.getBody();

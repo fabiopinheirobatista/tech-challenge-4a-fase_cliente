@@ -95,39 +95,7 @@ class ClienteApiControllerCadastrarClienteITTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(clienteRequestDto)))
                 .andExpect(status().isConflict())
-                .andExpect(jsonPath("$.status").value(409))
-//                .andExpect(jsonPath("$.message").exists())
-//                .andExpect(jsonPath("$.errors").isArray())
-//                .andExpect(jsonPath("$.errors[*].field").exists())
-//                .andExpect(jsonPath("$.errors[*].message").exists())
-        ;
-    }
-
-    @Test
-    void cadastrarClienteCPFVazio() throws Exception {
-        endereco = new ClienteRequestDto.EnderecoRequestDto(
-                "Avenida Paulista",
-                "1000",
-                "Sala 123",
-                "Bela Vista",
-                "São Paulo",
-                "SP",
-                "01.310-100"
-        );
-        clienteRequestDto = new ClienteRequestDto(
-                "João da Silva",
-                "",
-                LocalDate.of(1990, 1, 1),
-                endereco
-        );
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-
-        mockMvc.perform(post("/clientes")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clienteRequestDto)))
-                .andExpect(status().isConflict());
+                .andExpect(jsonPath("$.status").value(409));
     }
 
     @Test

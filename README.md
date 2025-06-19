@@ -157,18 +157,3 @@ As principais variáveis/configurações são:
 
 Você pode definir essas variáveis no ambiente ou no arquivo `application.properties`.
 
----
-
-## Observações
-
-- O projeto valida CPF e CEP antes de persistir os dados.
-- O CEP pode ser validado via integração com API externa (ex: ViaCEP).
-- O Docker Compose sobe apenas o banco de dados MySQL; a aplicação deve ser iniciada separadamente.
-- Para ambiente de produção, revise as configurações de segurança e variáveis sensíveis.
-
----
-
-## Contato
-
-Dúvidas ou sugestões? Entre em contato com o time do projeto.
-

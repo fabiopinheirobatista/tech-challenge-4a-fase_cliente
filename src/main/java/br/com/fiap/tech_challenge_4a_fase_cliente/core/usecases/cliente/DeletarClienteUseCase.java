@@ -12,9 +12,7 @@ public class DeletarClienteUseCase {
     private final ClienteGateway clienteGateway;
 
     public void executar(Long id) {
-        if (clienteGateway.buscarPorId(id).isEmpty()) {
-            throw new ClienteNaoEncontradoException(id);
-        }
+        clienteGateway.buscarPorId(id).orElseThrow(() -> new ClienteNaoEncontradoException(id));
         clienteGateway.deletar(id);
     }
 

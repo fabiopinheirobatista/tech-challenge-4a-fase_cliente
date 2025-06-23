@@ -16,6 +16,7 @@ public class AtualizarClienteUseCase {
         clienteGateway
                 .buscarPorId(id)
                 .orElseThrow(() -> new ClienteNaoEncontradoException(id));
+
         return clienteGateway.atualizar(id, cliente);
     }
 

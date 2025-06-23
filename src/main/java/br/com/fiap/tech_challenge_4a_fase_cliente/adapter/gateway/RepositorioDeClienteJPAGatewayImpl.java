@@ -30,14 +30,14 @@ public class RepositorioDeClienteJPAGatewayImpl implements ClienteGateway {
 
     @Override
     public Optional<Cliente> buscarPorId(Long id) {
-        Optional<ClienteEntity> clienteEntityOptional = clienteRepository.findById(id);
-        return clienteEntityOptional.map(mapper::toClientDomain);
+        Optional<ClienteEntity> clienteEntity = clienteRepository.findById(id);
+        return clienteEntity.map(entity -> mapper.toClientDomain(entity));
     }
 
     @Override
     public Optional<Cliente> buscarPorCpf(String cpf) {
-        return clienteRepository.findByCpf(cpf)
-                .map(mapper::toClientDomain);
+        Optional<ClienteEntity> clienteEntity = clienteRepository.findByCpf(cpf);
+        return clienteEntity.map( e-> mapper.toClientDomain(e));
     }
 
     @Override

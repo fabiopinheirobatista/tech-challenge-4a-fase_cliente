@@ -57,20 +57,14 @@ public class ClienteApiController implements ClienteController{
     @Override
     @GetMapping("/{id}")
     public ClienteResponseDto buscarClientePorId(@PathVariable Long id) {
-        Optional<Cliente> clienteOptional =  buscarClientePorIdUseCase.executar(id);
-        return clienteOptional
-            .map(mapper::toClienteResponseDto)
-            .orElseThrow(() -> new ClienteNaoEncontradoException(id));
-                
+        Cliente clienteOptional =  buscarClientePorIdUseCase.executar(id);
+        return mapper.toClienteResponseDto(clienteOptional);
     }
 
     @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletarCliente(@PathVariable Long id) {
-        buscarClientePorIdUseCase
-            .executar(id)
-            .orElseThrow(() -> new ClienteNaoEncontradoException(id));
         deletarClienteUseCase.executar(id);
     }
 

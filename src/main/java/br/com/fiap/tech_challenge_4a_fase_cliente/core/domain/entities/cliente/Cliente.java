@@ -18,6 +18,8 @@ public class Cliente {
     private Endereco endereco;
 
 
+    public Cliente(){}
+
     public Cliente(Long id, String nome, String cpf, LocalDate dataNascimento, Endereco endereco) {
         this(nome, cpf, dataNascimento, endereco);
         this.id = id;

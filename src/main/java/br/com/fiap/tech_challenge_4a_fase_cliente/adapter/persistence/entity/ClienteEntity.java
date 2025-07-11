@@ -29,7 +29,7 @@ public class ClienteEntity {
     private Long id;
     @Column(nullable = false)
     private String nome;
-    @Column(nullable = false, unique = true, length = 11)
+    @Column(nullable = false, unique = true, length = 14)
     private String cpf;
     @Column(name = "data_nascimento")
     private LocalDate dataNascimento;

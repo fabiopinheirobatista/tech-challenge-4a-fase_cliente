@@ -4,13 +4,11 @@ import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.controller.request.Cli
 import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.controller.response.ClienteResponseDto;
 import br.com.fiap.tech_challenge_4a_fase_cliente.adapter.mapper.ClienteMapper;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.cliente.Cliente;
-import br.com.fiap.tech_challenge_4a_fase_cliente.core.exception.ClienteNaoEncontradoException;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.usecases.cliente.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/clientes")

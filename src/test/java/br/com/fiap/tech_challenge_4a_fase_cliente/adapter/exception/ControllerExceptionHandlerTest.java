@@ -6,6 +6,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Path;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +34,7 @@ import static org.mockito.Mockito.when;
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
+@DisplayName("Testes Unitários do Handler de Exceções do Controller")
 class ControllerExceptionHandlerTest {
 
     private ControllerExceptionHandler exceptionHandler;
@@ -45,20 +47,16 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
+    @DisplayName("Deve tratar corretamente uma ConstraintViolationException")
     void handleConstraintViolationException() {
-        // Arrange
         Set<ConstraintViolation<?>> violations = new HashSet<>();
         ConstraintViolation<?> violation = mock(ConstraintViolation.class);
         Path path = mock(Path.class);
-
         when(violation.getMessage()).thenReturn("campo inválido");
         when(violation.getPropertyPath()).thenReturn(path);
         when(path.toString()).thenReturn("nome");
         violations.add(violation);
-
         ConstraintViolationException ex = new ConstraintViolationException("Erro de validação", violations);
-
-        // Act
         ResponseEntity<Object> response = exceptionHandler.handleConstraintViolationException(ex, webRequest);
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
@@ -68,6 +66,7 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
+    @DisplayName("Deve tratar corretamente uma MethodArgumentNotValidException")
     void handleMethodArgumentNotValid() {
         MethodArgumentNotValidException ex = mock(MethodArgumentNotValidException.class);
         BindingResult bindingResult = mock(BindingResult.class);
@@ -75,10 +74,8 @@ class ControllerExceptionHandlerTest {
         when(bindingResult.getFieldErrors()).thenReturn(List.of(
                 new FieldError("object", "field", "mensagem de erro")
         ));
-
         ResponseEntity<Object> response = exceptionHandler.handleMethodArgumentNotValid(
                 ex, new HttpHeaders(), HttpStatus.BAD_REQUEST, webRequest);
-
         assertNotNull(response);
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         Problem problem = (Problem) response.getBody();
@@ -87,11 +84,10 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
+    @DisplayName("Deve tratar corretamente uma ClienteNaoEncontradoException")
     void handleClienteNaoEncontradoException() {
         ClienteNaoEncontradoException ex = new ClienteNaoEncontradoException("Cliente não encontrado");
-
         ResponseEntity<Object> response = exceptionHandler.handleEstadoNaoEncontradoException(ex, webRequest);
-
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         Problem problem = (Problem) response.getBody();
@@ -100,14 +96,10 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
-    void handleCEPInvalidoException() {
-        // Arrange
+    @DisplayName("Deve tratar corretamente uma CEPInvalidoException")
+    void handleCEPInvalidoException() {        
         CEPInvalidoException ex = new CEPInvalidoException();
-
-        // Act
         ResponseEntity<Object> response = exceptionHandler.handleCEPInvalidoException(ex, webRequest);
-
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         Problem problem = (Problem) response.getBody();
@@ -116,14 +108,10 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
+    @DisplayName("Deve tratar corretamente uma CPFInvalidoException")
     void handleCPFInvalidoException() {
-        // Arrange
         CPFInvalidoException ex = new CPFInvalidoException();
-
-        // Act
         ResponseEntity<Object> response = exceptionHandler.handleCPFInvalidoException(ex, webRequest);
-
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         Problem problem = (Problem) response.getBody();
@@ -132,14 +120,10 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
+    @DisplayName("Deve tratar corretamente uma CpfJaCadastradoException")
     void handleCpfJaCadastradoException() {
-        // Arrange
         CpfJaCadastradoException ex = new CpfJaCadastradoException("CPF já cadastrado");
-
-        // Act
         ResponseEntity<Object> response = exceptionHandler.handleCPFInvalidoException(ex, webRequest);
-
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         Problem problem = (Problem) response.getBody();
@@ -148,16 +132,12 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
+    @DisplayName("Deve tratar corretamente uma DataIntegrityViolationException")
     void handleDataIntegrityViolationException() {
-        // Arrange
         DataIntegrityViolationException ex = new DataIntegrityViolationException(
                 "Duplicate entry '123.456.789-10' for key 'cpf'"
         );
-
-        // Act
         ResponseEntity<Object> response = exceptionHandler.handleDataIntegrityViolationException(ex, webRequest);
-
-        // Assert
         assertNotNull(response);
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
         Problem problem = (Problem) response.getBody();
@@ -166,12 +146,11 @@ class ControllerExceptionHandlerTest {
     }
 
     @Test
+    @DisplayName("Deve tratar corretamente uma NoHandlerFoundException")
     void handleNoHandlerFoundException() {
         NoHandlerFoundException ex = new NoHandlerFoundException("GET", "/invalid-path", new HttpHeaders());
-
         ResponseEntity<Object> response = exceptionHandler.handleNoHandlerFoundException(
                 ex, new HttpHeaders(), HttpStatus.NOT_FOUND, webRequest);
-
         assertNotNull(response);
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         Problem problem = (Problem) response.getBody();

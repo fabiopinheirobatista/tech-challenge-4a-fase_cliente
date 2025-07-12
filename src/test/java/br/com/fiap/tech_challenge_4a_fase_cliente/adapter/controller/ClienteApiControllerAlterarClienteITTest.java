@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,13 +29,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
+@DisplayName("Testes de Integração do Endpoint de Alteração de Cliente")
 class ClienteApiControllerAlterarClienteITTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private CriarClienteUseCase criarUsuarioUseCase;
+    private CriarClienteUseCase criarClienteUseCase;
 
     private ObjectMapper objectMapper;
     private Cliente clienteCriado;
@@ -63,10 +65,11 @@ class ClienteApiControllerAlterarClienteITTest {
                 endereco
         );
 
-        clienteCriado = criarUsuarioUseCase.executar(clienteCriado);
+        clienteCriado = criarClienteUseCase.executar(clienteCriado);
     }
 
     @Test
+    @DisplayName("Deve alterar um cliente com sucesso quando dados são válidos")
     void alterarClienteSucesso() throws Exception {
         ClienteRequestDto.EnderecoRequestDto novoEndereco = new ClienteRequestDto.EnderecoRequestDto(
                 "Rua Nova",
@@ -95,6 +98,7 @@ class ClienteApiControllerAlterarClienteITTest {
     }
 
     @Test
+    @DisplayName("Deve retornar erro quando tenta alterar um cliente que não existe")
     void alterarClienteNaoEncontrado() throws Exception {
         ClienteRequestDto.EnderecoRequestDto endereco = new ClienteRequestDto.EnderecoRequestDto(
                 "Rua Nova",
@@ -106,8 +110,8 @@ class ClienteApiControllerAlterarClienteITTest {
                 "20.040-100"
         );
 
-        ClienteRequestDto clienteRequestDto = new ClienteRequestDto(
-                "João da Silva",
+        ClienteRequestDto clienteAtualizado = new ClienteRequestDto(
+                "João da Silva Atualizado",
                 "123.456.789-10",
                 LocalDate.of(1990, 1, 1),
                 endereco
@@ -115,7 +119,7 @@ class ClienteApiControllerAlterarClienteITTest {
 
         mockMvc.perform(put("/clientes/{id}", 99999L)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(clienteRequestDto)))
+                        .content(objectMapper.writeValueAsString(clienteAtualizado)))
                 .andExpect(status().isNotFound());
     }
 }

@@ -4,6 +4,7 @@ import br.com.fiap.tech_challenge_4a_fase_cliente.TechChallenge4aFaseClienteAppl
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.cliente.Cliente;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.gateways.ClienteGateway;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.when;
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
+@DisplayName("Testes Unitários do Caso de Uso de Busca de Cliente")
 class BuscarClienteUseCaseTest {
 
     private ClienteGateway clienteGateway;
@@ -33,6 +35,7 @@ class BuscarClienteUseCaseTest {
     }
 
     @Test
+    @DisplayName("Deve retornar cliente quando ele existir na base")
     void deveRetornarClienteQuandoExistente() {
         Long id = 1L;
         Cliente cliente = new Cliente(id, "João", "123.456.789-10", LocalDate.of(1990, 1, 1), null);
@@ -43,14 +46,4 @@ class BuscarClienteUseCaseTest {
 
         assertTrue(executar!=null);
     }
-
-//    @Test
-//    void deveRetornarVazioQuandoClienteNaoExistente() {
-//        Long id = 2L;
-//        when(clienteGateway.buscarPorId(id)).thenReturn(Optional.empty());
-//
-//        Cliente resultado = buscarClienteUseCase.executar(id);
-//
-//        assertFalse(resultado==null);
-//    }
 }

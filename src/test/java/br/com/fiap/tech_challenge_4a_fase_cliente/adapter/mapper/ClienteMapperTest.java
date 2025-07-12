@@ -8,12 +8,14 @@ import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.cliente.C
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.endereco.Endereco;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.vo.CPF;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Testes Unitários do Mapeador de Cliente")
 class ClienteMapperTest {
 
     private ClienteMapper mapper;
@@ -46,8 +48,6 @@ class ClienteMapperTest {
                 "SP",
                 "01.234-567"
         );
-
-        // Usando CPF ao invés de String
         CPF cpf = new CPF("123.456.789-10");
 
         cliente = new Cliente(
@@ -84,6 +84,7 @@ class ClienteMapperTest {
 
 
     @Test
+    @DisplayName("Deve converter um Cliente do domínio para uma entidade ClienteEntity")
     void toClienteEntity() {
         ClienteEntity result = mapper.toClienteEntity(cliente);
         assertNotNull(result);
@@ -95,22 +96,21 @@ class ClienteMapperTest {
     }
 
     @Test
+    @DisplayName("Deve converter uma entidade ClienteEntity para um Cliente do domínio") 
     void toClientDomain() {
         Cliente result = mapper.toClientDomain(clienteEntity);
         assertNotNull(result);
         assertEquals(clienteEntity.getId(), result.getId());
         assertEquals(clienteEntity.getNome(), result.getNome());
-        assertEquals(clienteEntity.getCpf(), result.getCpf().getDocument()); // Corrigido
+        assertEquals(clienteEntity.getCpf(), result.getCpf().getDocument()); 
         assertEquals(clienteEntity.getDataNascimento(), result.getDataNascimento());
         assertNotNull(result.getEndereco());
     }
 
     @Test
+    @DisplayName("Deve converter um Endereco do domínio para uma entidade EnderecoEntity")
     void toEnderecoEntity() {
-        // Act
         EnderecoEntity result = mapper.toEnderecoEntity(endereco);
-
-        // Assert
         assertNotNull(result);
         assertEquals(endereco.getLogradouro(), result.getLogradouro());
         assertEquals(endereco.getNumero(), result.getNumero());
@@ -122,11 +122,9 @@ class ClienteMapperTest {
     }
 
     @Test
+    @DisplayName("Deve converter uma entidade EnderecoEntity para um Endereco do domínio")
     void toEnderecoDomain() {
-        // Act
         Endereco result = mapper.toEnderecoDomain(enderecoEntity);
-
-        // Assert
         assertNotNull(result);
         assertEquals(enderecoEntity.getLogradouro(), result.getLogradouro());
         assertEquals(enderecoEntity.getNumero(), result.getNumero());
@@ -138,37 +136,41 @@ class ClienteMapperTest {
     }
 
     @Test
+    @DisplayName("Deve converter um ClienteRequestDto para um Cliente do domínio")
     void toClienteDomain() {
         Cliente result = mapper.toClienteDomain(clienteRequestDto);
         assertNotNull(result);
         assertEquals(clienteRequestDto.nome(), result.getNome());
-        assertEquals(clienteRequestDto.cpf(), result.getCpf().getDocument()); // Já são Strings
+        assertEquals(clienteRequestDto.cpf(), result.getCpf().getDocument());
         assertEquals(clienteRequestDto.dataNascimento(), result.getDataNascimento());
         assertNotNull(result.getEndereco());
     }
 
     @Test
+    @DisplayName("Deve converter um Cliente do domínio para um ClienteResponseDto")
     void toClienteResponseDto() {
         ClienteResponseDto result = mapper.toClienteResponseDto(cliente);
         assertNotNull(result);
         assertEquals(cliente.getId(), result.id());
         assertEquals(cliente.getNome(), result.nome());
-        assertEquals(cliente.getCpf().getDocument(), result.cpf()); // Já são Strings
+        assertEquals(cliente.getCpf().getDocument(), result.cpf());
         assertEquals(cliente.getDataNascimento(), result.dataNascimento());
         assertNotNull(result.endereco());
     }
 
     @Test
+    @DisplayName("Deve converter um Cliente do domínio para um ClienteRequestDto")
     void toClienteRequestDto() {
         ClienteRequestDto result = mapper.toClienteRequestDto(cliente);
         assertNotNull(result);
         assertEquals(cliente.getNome(), result.nome());
-        assertEquals(cliente.getCpf().getDocument(), result.cpf()); // Já são Strings
+        assertEquals(cliente.getCpf().getDocument(), result.cpf());
         assertEquals(cliente.getDataNascimento(), result.dataNascimento());
         assertNotNull(result.endereco());
     }
 
     @Test
+    @DisplayName("Deve retornar null quando o input for null em todos os métodos de mapeamento")
     void shouldReturnNullWhenInputIsNull() {
         assertNull(mapper.toClienteEntity(null));
         assertNull(mapper.toClientDomain((ClienteEntity) null));

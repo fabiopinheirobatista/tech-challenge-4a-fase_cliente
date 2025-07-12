@@ -5,6 +5,7 @@ import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.cliente.C
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.endereco.Endereco;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.usecases.cliente.CriarClienteUseCase;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,13 +25,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
+@DisplayName("Testes de Integração do Endpoint de Busca de Cliente por ID")
 class ClienteApiControllerBuscarPorIdClienteITTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    private CriarClienteUseCase criarUsuarioUseCase;
+    private CriarClienteUseCase criarClienteUseCase;
 
     private Cliente clienteCriado;
 
@@ -54,10 +56,11 @@ class ClienteApiControllerBuscarPorIdClienteITTest {
                 endereco
         );
 
-        clienteCriado = criarUsuarioUseCase.executar(cliente);
+        clienteCriado = criarClienteUseCase.executar(cliente);
     }
 
     @Test
+    @DisplayName("Deve retornar cliente quando buscar por ID existente")
     void buscarClientePorIdExistente() throws Exception {
         mockMvc.perform(get("/clientes/{id}", clienteCriado.getId())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -69,6 +72,7 @@ class ClienteApiControllerBuscarPorIdClienteITTest {
     }
 
     @Test
+    @DisplayName("Deve retornar erro quando buscar por ID inexistente")
     void buscarClientePorIdInexistente() throws Exception {
         mockMvc.perform(get("/clientes/{id}", 99999L)
                         .contentType(MediaType.APPLICATION_JSON))

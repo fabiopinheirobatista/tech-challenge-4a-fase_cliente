@@ -6,6 +6,7 @@ import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.cliente.C
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.endereco.Endereco;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.usecases.cliente.CriarClienteUseCase;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
+@DisplayName("Testes de Integração do Endpoint de Deleção de Cliente")
 class ClienteApiControllerDeletarClienteITTest {
 
     @Autowired
@@ -63,6 +65,7 @@ class ClienteApiControllerDeletarClienteITTest {
     }
 
     @Test
+    @DisplayName("Deve deletar um cliente com sucesso quando ID existe")
     void deletarClienteSucesso() throws Exception {
         mockMvc.perform(delete("/clientes/{id}", clienteCriado.getId())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -70,6 +73,7 @@ class ClienteApiControllerDeletarClienteITTest {
     }
 
     @Test
+    @DisplayName("Deve retornar erro quando tentar deletar um cliente que não existe")
     void deletarClienteNaoEncontrado() throws Exception {
         mockMvc.perform(delete("/clientes/{id}", 99999L)
                         .contentType(MediaType.APPLICATION_JSON))

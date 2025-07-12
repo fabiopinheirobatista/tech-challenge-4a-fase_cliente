@@ -5,6 +5,7 @@ import br.com.fiap.tech_challenge_4a_fase_cliente.core.domain.entities.cliente.C
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.exception.ClienteNaoEncontradoException;
 import br.com.fiap.tech_challenge_4a_fase_cliente.core.gateways.ClienteGateway;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +22,7 @@ import static org.mockito.Mockito.*;
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
+@DisplayName("Testes Unitários do Caso de Uso de Atualização de Cliente")
 class AtualizarClienteUseCaseTest {
 
     private ClienteGateway clienteGateway;
@@ -33,6 +35,7 @@ class AtualizarClienteUseCaseTest {
     }
 
     @Test
+    @DisplayName("Deve atualizar cliente quando ele existir na base")
     void deveAtualizarClienteQuandoExistente() {
         Long id = 1L;
         Cliente cliente = new Cliente(id, "Nome", "123.456.789-10", LocalDate.of(1990, 1, 1), null);
@@ -49,6 +52,7 @@ class AtualizarClienteUseCaseTest {
     }
 
     @Test
+    @DisplayName("Deve lançar exceção quando tentar atualizar cliente inexistente")
     void deveLancarExcecaoQuandoClienteNaoEncontrado() {
         Long id = 2L;
         Cliente cliente = new Cliente(id, "Nome", "123.456.789-10", LocalDate.of(1990, 1, 1), null);

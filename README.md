@@ -323,3 +323,7 @@ curl http://localhost:8080/actuator/metrics
 - Logs estruturados em JSON
 - Diferentes níveis por ambiente
 
+
+## Quarkus Implementation
+
+A simplified Quarkus module is available under `cliente-quarkus`. Run `./mvnw -f cliente-quarkus/pom.xml quarkus:dev` to start the API.

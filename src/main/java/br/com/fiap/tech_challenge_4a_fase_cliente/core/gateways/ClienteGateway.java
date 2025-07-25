@@ -13,4 +13,5 @@ public interface ClienteGateway {
     void deletar(Long id);
     Cliente atualizar(Long id, Cliente cliente);
     List<Cliente> listarTodos();
+    boolean clienteExiste(Long id);
 }

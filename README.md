@@ -45,8 +45,9 @@ O projeto segue a Clean Architecture, dividida em camadas concêntricas:
 - Object Value Patterns
 - Domain-Driven Design concepts
 
-### Frameworks & Libraries
+-### Frameworks & Libraries
 - Spring Boot 3.x
+- Quarkus (módulo alternativo em `quarkus-app`)
 - Spring Data JPA
 - Spring Validation
 - Spring HATEOAS
@@ -155,6 +156,14 @@ docker-compose up -d mysql
 ```sh
 ./mvnw clean install
 ./mvnw spring-boot:run
+```
+
+### Executando o módulo Quarkus
+
+Para compilar e executar a versão em Quarkus (localizada em `quarkus-app`):
+
+```sh
+mvn -f quarkus-app/pom.xml quarkus:dev
 ```
 
 5. Verifique a saúde da aplicação:

@@ -61,5 +61,14 @@ public class RepositorioDeClienteJPAGatewayImpl implements ClienteGateway {
                 .map(entity -> mapper.toClientDomain(entity))
                 .toList();
     }
+
+    @Override
+    public boolean clienteExiste(Long id) {
+        Optional<ClienteEntity> clienteEntity = clienteRepository.findById(id);
+        if (clienteEntity.isPresent()) {
+            return true;
+        }
+        return false;
+    }
 }
 

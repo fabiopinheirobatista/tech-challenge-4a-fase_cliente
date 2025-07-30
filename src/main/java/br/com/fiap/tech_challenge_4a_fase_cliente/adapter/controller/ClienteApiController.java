@@ -19,6 +19,8 @@ public class ClienteApiController implements ClienteController{
     private final DeletarClienteUseCase deletarClienteUseCase;
     private final BuscarClienteUseCase buscarClientePorIdUseCase;
     private final ListarTodosClienteUseCase listarUsuariosUseCase;
+    private final ExisteClienteUseCase existeClienteUseCase;
+
     private ClienteMapper mapper;
 
     public ClienteApiController(
@@ -26,12 +28,13 @@ public class ClienteApiController implements ClienteController{
             AtualizarClienteUseCase atualizarClienteUseCase,
             DeletarClienteUseCase deletarClienteUseCase,
             BuscarClienteUseCase buscarClientePorIdUseCase,
-            ListarTodosClienteUseCase listarUsuariosUseCase) {
+            ListarTodosClienteUseCase listarUsuariosUseCase, ExisteClienteUseCase existeClienteUseCase) {
         this.criarUsuarioUseCase = criarUsuarioUseCase;
         this.atualizarClienteUseCase = atualizarClienteUseCase;
         this.deletarClienteUseCase = deletarClienteUseCase;
         this.buscarClientePorIdUseCase = buscarClientePorIdUseCase;
         this.listarUsuariosUseCase = listarUsuariosUseCase;
+        this.existeClienteUseCase = existeClienteUseCase;
         this.mapper = new ClienteMapper();
     }
 
@@ -57,6 +60,12 @@ public class ClienteApiController implements ClienteController{
     public ClienteResponseDto buscarClientePorId(@PathVariable Long id) {
         Cliente clienteOptional =  buscarClientePorIdUseCase.executar(id);
         return mapper.toClienteResponseDto(clienteOptional);
+    }
+
+    @Override
+    @GetMapping("/existe/{id}")
+    public boolean clienteExiste(@PathVariable Long id) {
+        return existeClienteUseCase.executar(id);
     }
 
     @Override
